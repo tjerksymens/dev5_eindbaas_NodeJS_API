@@ -1,20 +1,28 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require("express");
+const mongoose = require("mongoose");
+require("dotenv").config();
+const app = express();
+const port = 3000;
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// enable cors
+const cors = require("cors");
+app.use(cors());
 
-var app = express();
+// connect to mongodb
+mongoose.connect(process.env.MONGODB);
 
-app.use(logger('dev'));
+console.log(process.env.MONGODB);
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+
+//import routes
+const shoesRouter = require("./routes/api/v1/shoes");
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// use routes
+app.use("/api/v1/shoes", shoesRouter);
 
-module.exports = app;
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+});
