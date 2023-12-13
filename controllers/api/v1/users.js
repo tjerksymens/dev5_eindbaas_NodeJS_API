@@ -40,5 +40,41 @@ const login = async (req, res, next) => {
     });
 }; 
 
+// POST /api/v1/users/change-password
+const changePassword = async (req, res, next) => {
+    const { username, oldPassword, newPassword } = req.body;
+
+    // Authenticate the user
+    const authenticationResult = await User.authenticate()(username, oldPassword).catch(error => {
+        res.json({
+            status: "error",
+            message: error.message
+        });
+    });
+
+    if (authenticationResult && authenticationResult.user) {
+        // Change the password using passport-local-mongoose method
+        authenticationResult.user.changePassword(oldPassword, newPassword, function(err) {
+            if (err) {
+                res.json({
+                    status: "error",
+                    message: err.message
+                });
+            } else {
+                res.json({
+                    status: "success",
+                    message: "Password changed"
+                });
+            }
+        });
+    } else {
+        res.json({
+            status: "error",
+            message: "Authentication failed"
+        });
+    }
+};
+
 module.exports.signup = signup;
 module.exports.login = login;
+module.exports.changePassword = changePassword;
