@@ -1,6 +1,6 @@
 // create a mongoose schema for a shoes
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const ShoeSchema = new Schema({
     name: {
         type: String,
