@@ -1,20 +1,26 @@
 // require the Shoe model
 const Shoe = require("../../../models/Shoe");
 
-// Post a shoe (gegevens van de schoen configuratie en contactgegevens van de klant moeten hier nog bijkomen)
+// Post a shoe haalt gegevens van de schoen configuratie van three.js (contactgegevens van de klant moeten hier nog bijkomen)
 const create = async (req, res) => {
     try {
-        let shoeName = req.body.name;
-        let shoe = new Shoe();
-        shoe.name = shoeName;
+        const { name, configuration, price, size } = req.body;
+
+        const shoe = new Shoe({
+            name: name,
+            configuration: configuration,
+            price: price,
+            size: size
+        });
+
         await shoe.save();
+
         res.json({
             status: "success",
             message: "POST a new shoe",
             data: [
                 {
-                    shoe: shoe,
-                    status: "bestteling ontvangen"
+                    shoe
                 }
             ]
         });

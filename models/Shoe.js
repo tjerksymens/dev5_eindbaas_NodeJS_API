@@ -6,6 +6,21 @@ const ShoeSchema = new Schema({
         type: String,
         required: true
     },
+    configuration: {
+        type: Object,
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    size: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        default: "Bestelling ontvangen"
+    },
 });
 // export the model
 const Shoe = mongoose.model('Shoe', ShoeSchema);
