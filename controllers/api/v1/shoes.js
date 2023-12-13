@@ -1,7 +1,7 @@
 // require the Shoe model
 const Shoe = require("../../../models/Shoe");
 
-// post a shoe
+// Post a shoe (gegevens van de schoen configuratie en contactgegevens van de klant moeten hier nog bijkomen)
 const create = async (req, res) => {
     try {
         let shoeName = req.body.name;
@@ -28,9 +28,16 @@ const create = async (req, res) => {
     }
 }
 
+// Admin moet bestelling van schoen kunnen verwijderen
 
 
-// get all shoes
+// Admin moet de status (In productie, Verzonden, Geleverd) van de bestelling kunnen aanpassen
+
+
+// Get a shoe by id haalt de schoen op met de bijbehorende configuratie op om bijvoorbeeld delen van schoen op social media
+
+
+// Get all shoes (haal alle bestellingen op van de schoenen die gemaakt zijn) eventuele filter opties
 const index = async (req, res) => {
     let shoes = await Shoe.find({});
     res.json({
