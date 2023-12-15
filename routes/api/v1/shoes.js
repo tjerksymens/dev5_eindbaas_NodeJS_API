@@ -5,6 +5,7 @@ const router = express.Router();
 const shoesController = require("../../../controllers/api/v1/shoes");
 
 router.get("/", shoesController.index);
+router.get("/:id", shoesController.showShoe);
 router.post("/", shoesController.create);
 
 module.exports = router;
