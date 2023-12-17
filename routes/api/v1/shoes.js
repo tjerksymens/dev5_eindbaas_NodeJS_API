@@ -7,7 +7,7 @@ const cors = require("cors");
 const shoesController = require("../../../controllers/api/v1/shoes");
 
 router.use(cors());
-router.get("/", passport.authenticate('jwt', { session: false }), shoesController.index);
+router.get("/", shoesController.index);
 router.delete("/:id", passport.authenticate('jwt', { session: false }), shoesController.cancel);
 router.patch("/:id", shoesController.orderStatus);
 router.patch("/payment/:id", shoesController.paymentStatus);
