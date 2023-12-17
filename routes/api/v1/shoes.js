@@ -11,6 +11,6 @@ router.patch("/:id", shoesController.orderStatus);
 router.patch("/payment/:id", shoesController.paymentStatus);
 router.get("/status/:id", shoesController.showStatus);
 router.get("/:id", shoesController.showShoe);
-router.post("/", passport.authenticate('jwt', { session: false }), shoesController.create);
+router.post("/:token", passport.authenticate('jwt', { session: false }), shoesController.create);
 
 module.exports = router;
