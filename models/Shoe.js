@@ -21,6 +21,10 @@ const ShoeSchema = new Schema({
         type: String,
         default: "Order Received"
     },
+    userId: {
+        type: String,
+        required: true
+    },
 });
 // export the model
 const Shoe = mongoose.model('Shoe', ShoeSchema);

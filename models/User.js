@@ -23,9 +23,6 @@ const UserSchema = new Schema({
     country: {
         type: String,
     },
-    userId: {
-        type: String,
-    },
 });
 UserSchema.plugin(passportLocalMongoose);
 

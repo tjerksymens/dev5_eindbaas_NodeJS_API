@@ -7,29 +7,20 @@ const create = async (req, res) => {
   try {
     const { name, configuration, price, size } = req.body;
     const { token } = req.params;
+    const decodedToken = jwt.verify(token, "MyVerySecretWord");
+    const uid = decodedToken.uid;
 
-    // Verify and decode the JWT token
-    jwt.verify(token, 'MyVerySecretWord', (err, decoded) => {
-      if (err) {
-        console.error(err);
-        return res.status(401).json({
-          status: 'error',
-          message: 'Unauthorized. Invalid token.',
-        });
-      }
-
-      const userId = decoded.uid; 
-      const shoe = new Shoe({
+    const shoe = new Shoe({
         name: name,
         configuration: configuration,
         price: price,
         size: size,
-        userId: userId, // Associate the order with the user ID
-      });
+        userId: uid,
+    });
 
-      shoe.save();
+    shoe.save();
 
-      res.json({
+    res.json({
         status: 'success',
         message: 'POST a new shoe',
         data: [
@@ -37,7 +28,6 @@ const create = async (req, res) => {
             shoe,
           },
         ],
-      });
     });
   } catch (error) {
     console.error(error);
