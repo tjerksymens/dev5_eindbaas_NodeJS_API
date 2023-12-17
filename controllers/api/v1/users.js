@@ -143,9 +143,29 @@ const getUser = async (req, res, next) => {
 
 }
 
+//get costumer infor from id
+const getCostumer = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const user = await User.findById(id);
+        res.json({
+            status: "success",
+            data: {
+                user: user
+            }
+        });
+    } catch (error) {
+        res.json({
+            status: "error",
+            message: error.message
+        });
+    }
+
+}
 
 module.exports.signup = signup;
 module.exports.login = login;
 module.exports.changePassword = changePassword;
 module.exports.checkAdmin = checkAdmin;
 module.exports.getUser = getUser;
+module.exports.getCostumer = getCostumer;
