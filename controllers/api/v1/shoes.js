@@ -67,7 +67,7 @@ const cancel = async (req, res) => {
     }
 };
 
-// Admin moet de status (order received, order accepted, in production, order send, order arrived) van de bestelling kunnen aanpassen ✅
+// Admin moet de status (order received, order accepted, in production, order send, order arrived) van de bestelling kunnen aanpassen
 const orderStatus = async (req, res) => {
     try {
         //check if the admin boolean is true
