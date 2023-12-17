@@ -1,38 +1,54 @@
 // require the Shoe model
 const Shoe = require("../../../models/Shoe");
+const jwt = require('jsonwebtoken');
 
-// Post a shoe haalt gegevens van de schoen configuratie van three.js (contactgegevens van de klant moeten hier nog bijkomen)
+// Post a shoe haalt gegevens van de schoen configuratie van three.js
 const create = async (req, res) => {
-    try {
-        const { name, configuration, price, size } = req.body;
+  try {
+    const { name, configuration, price, size } = req.body;
+    const { token } = req.params;
 
-        const shoe = new Shoe({
-            name: name,
-            configuration: configuration,
-            price: price,
-            size: size
+    // Verify and decode the JWT token
+    jwt.verify(token, 'MyVerySecretWord', (err, decoded) => {
+      if (err) {
+        console.error(err);
+        return res.status(401).json({
+          status: 'error',
+          message: 'Unauthorized. Invalid token.',
         });
+      }
 
-        await shoe.save();
+      const userId = decoded.uid; 
+      const shoe = new Shoe({
+        name: name,
+        configuration: configuration,
+        price: price,
+        size: size,
+        userId: userId, // Associate the order with the user ID
+      });
 
-        res.json({
-            status: "success",
-            message: "POST a new shoe",
-            data: [
-                {
-                    shoe
-                }
-            ]
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: "error",
-            message: "Internal server error",
-            error: error.message,
-        });
-    }
-}
+      shoe.save();
+
+      res.json({
+        status: 'success',
+        message: 'POST a new shoe',
+        data: [
+          {
+            shoe,
+          },
+        ],
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal server error',
+      error: error.message,
+    });
+  }
+};
+
 
 // Admin moet bestelling van schoen kunnen verwijderen
 const cancel = async (req, res) => {
@@ -185,17 +201,26 @@ const showShoe = async (req, res) => {
 
 // Get all shoes (haal alle bestellingen op van de schoenen die gemaakt zijn) eventuele filter opties
 const index = async (req, res) => {
-    let shoes = await Shoe.find({});
-    res.json({
-        status: "success",
-        message: "GET all shoes",
-        data: [
-            {
-                shoes: shoes,
-            }
-        ]
-    });
+    try {
+        let shoes = await Shoe.find({});
+        res.json({
+            status: "success",
+            message: "GET all shoes",
+            data: [
+                {
+                    shoes: shoes,
+                }
+            ]
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: "error",
+            message: "Internal Server Error",
+        });
+    }
 };
+
 
 
 module.exports.create = create;
