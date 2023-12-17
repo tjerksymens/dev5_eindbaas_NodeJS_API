@@ -8,5 +8,6 @@ const usersController = require("../../../controllers/api/v1/users");
 router.post('/signup', usersController.signup);
 router.post('/login', usersController.login);
 router.post('/change-password', usersController.changePassword);
+router.get('/check-admin/:token', passport.authenticate('jwt', { session: false }), usersController.checkAdmin);
 
 module.exports = router;

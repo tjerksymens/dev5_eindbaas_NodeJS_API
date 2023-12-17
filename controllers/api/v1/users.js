@@ -99,6 +99,30 @@ const changePassword = async (req, res, next) => {
     }
 };
 
+const checkAdmin = async (req, res, next) => {
+    try{
+        const { token } = req.params;
+        const decodedToken = jwt.verify(token, "MyVerySecretWord");
+        const uid = decodedToken.uid;
+        const user = await User.findById(uid);
+        const admin = user.admin;
+        res.json({
+            status: "success",
+            data: {
+                admin: admin
+            }
+        });
+    } catch (error) {
+        res.json({
+            status: "error",
+            message: error.message
+        });
+    }
+
+}
+
+
 module.exports.signup = signup;
 module.exports.login = login;
 module.exports.changePassword = changePassword;
+module.exports.checkAdmin = checkAdmin;
