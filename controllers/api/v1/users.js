@@ -121,8 +121,31 @@ const checkAdmin = async (req, res, next) => {
 
 }
 
+//get user from token 
+const getUser = async (req, res, next) => {
+    try{
+        const { token } = req.params;
+        const decodedToken = jwt.verify(token, "MyVerySecretWord");
+        const uid = decodedToken.uid;
+        const user = await User.findById(uid);
+        res.json({
+            status: "success",
+            data: {
+                user: user
+            }
+        });
+    } catch (error) {
+        res.json({
+            status: "error",
+            message: error.message
+        });
+    }
+
+}
+
 
 module.exports.signup = signup;
 module.exports.login = login;
 module.exports.changePassword = changePassword;
 module.exports.checkAdmin = checkAdmin;
+module.exports.getUser = getUser;
