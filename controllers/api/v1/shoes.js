@@ -1,26 +1,38 @@
 // require the Shoe model
 const Shoe = require("../../../models/Shoe");
 const jwt = require('jsonwebtoken');
+const User = require('../../../models/User');
 
-// Post a shoe haalt gegevens van de schoen configuratie van three.js
+
 const create = async (req, res) => {
-  try {
-    const { name, configuration, price, size } = req.body;
-    const { token } = req.params;
-    const decodedToken = jwt.verify(token, "MyVerySecretWord");
-    const uid = decodedToken.uid;
-
-    const shoe = new Shoe({
+    try {
+      const { name, configuration, price, size } = req.body;
+      const { token } = req.params;
+      const decodedToken = jwt.verify(token, "MyVerySecretWord");
+      const uid = decodedToken.uid;
+  
+      // Fetch the user from the User model
+      const user = await User.findOne({ _id: uid });
+  
+      if (!user) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'User not found',
+        });
+      }
+  
+      // Create a new shoe with the user reference
+      const shoe = new Shoe({
         name: name,
         configuration: configuration,
         price: price,
         size: size,
-        userId: uid,
-    });
-
-    shoe.save();
-
-    res.json({
+        user: user._id, // Assign the user reference
+      });
+  
+      await shoe.save();
+  
+      res.json({
         status: 'success',
         message: 'POST a new shoe',
         data: [
@@ -28,16 +40,17 @@ const create = async (req, res) => {
             shoe,
           },
         ],
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
-      error: error.message,
-    });
-  }
-};
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        status: 'error',
+        message: 'Internal server error',
+        error: error.message,
+      });
+    }
+  };
+  
 
 
 // Admin moet bestelling van schoen kunnen verwijderen

@@ -21,8 +21,9 @@ const ShoeSchema = new Schema({
         type: String,
         default: "Order Received"
     },
-    userId: {
-        type: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
 });
