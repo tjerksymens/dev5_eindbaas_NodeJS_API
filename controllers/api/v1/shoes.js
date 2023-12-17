@@ -205,16 +205,12 @@ const showShoe = async (req, res) => {
 // Get all shoes (haal alle bestellingen op van de schoenen die gemaakt zijn) eventuele filter opties
 const index = async (req, res) => {
     try {
-        let shoes = await Shoe.find({});
+        let shoes = await Shoe.find().populate('user');
         res.json({
-            status: "success",
-            message: "GET all shoes",
-            data: [
-                {
-                    shoes: shoes,
-                }
-            ]
-        });
+            status: 'success',
+            message: 'GET all shoes',
+            data: shoes,
+          });
     } catch (error) {
         console.error(error);
         res.status(500).json({
