@@ -4,12 +4,15 @@ const User = require("../../../models/User");
 // POST /api/v1/users/signup
 const signup = async (req, res ,next) => {
     console.log(req.body);
-
-    let username = req.body.username;
-    let password = req.body.password;
+    let { username, password, first_name, last_name, adres, city, country  } = req.body;
 
     const user = new User({
-        username: username
+        username: username,
+        first_name: first_name,
+        last_name: last_name,
+        adres: adres,
+        city: city,
+        country: country
     });
     await user.setPassword(password);
     await user.save().then(result => {
@@ -17,8 +20,10 @@ const signup = async (req, res ,next) => {
             status: "success",
         })
     }).catch(error => {
+        console.log(error);
         res.json({
             status: "error",
+            message: error.message
         });
     });
 };
