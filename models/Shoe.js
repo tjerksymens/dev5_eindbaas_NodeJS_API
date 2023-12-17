@@ -19,7 +19,7 @@ const ShoeSchema = new Schema({
     },
     status: {
         type: String,
-        default: "Bestelling ontvangen"
+        default: "Order Received"
     },
 });
 // export the model

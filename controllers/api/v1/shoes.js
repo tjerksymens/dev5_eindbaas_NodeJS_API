@@ -67,8 +67,96 @@ const cancel = async (req, res) => {
     }
 };
 
-// Admin moet de status (In productie, Verzonden, Geleverd) van de bestelling kunnen aanpassen
+// Admin moet de status (order received, order accepted, in production, order send, order arrived) van de bestelling kunnen aanpassen ✅
+const orderStatus = async (req, res) => {
+    try {
+        //check if the admin boolean is true
+        const { admin } = req.body;
+        if (admin === true) {
+            const { id } = req.params;
+            const shoe = await Shoe.findByIdAndUpdate(id, req.body, { new: true });
+            res.json({
+                status: "success",
+                message: "UPDATE shoe status",
+                data: [
+                    {
+                        shoe
+                    }
+                ]
+            });
+        } else {
+            res.status(403).json({
+                status: 'error',
+                message: 'Forbidden: Admin access required',
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
 
+// de status moet geupdate worden wanneer de schoen betaald is (order accepted) en hier is geen admin status voor nodig
+const paymentStatus = async (req, res) => {
+    //check if the shoe status === order received
+    try {
+        const { id } = req.params;
+        const shoe = await Shoe.findById(id);
+        if (shoe.status === "Order Received" && req.body.status === "Order Accepted") {
+            //update the shoe status
+            const update = await Shoe.findByIdAndUpdate(id, req.body, { new: true });
+            res.json({
+                status: "success",
+                message: "UPDATE shoe status",
+                data: [
+                    {
+                        update
+                    }
+                ]
+            });
+        } else {
+            res.status(403).json({
+                status: 'error',
+                message: 'Forbidden: Admin access required',
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
+
+// de status van de schoen moet opgehaald kunnen worden
+const showStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const shoe = await Shoe.findById(id);
+        res.json({
+            status: "success",
+            message: "GET shoe status",
+            data: [
+                {
+                    shoe
+                }
+            ]
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
 
 // Get a shoe by id haalt de schoen op met de bijbehorende configuratie op om bijvoorbeeld delen van schoen op social media
 const showShoe = async (req, res) => {
@@ -111,5 +199,8 @@ const index = async (req, res) => {
 
 module.exports.create = create;
 module.exports.cancel = cancel;
+module.exports.orderStatus = orderStatus;
+module.exports.paymentStatus = paymentStatus;
+module.exports.showStatus = showStatus;
 module.exports.showShoe = showShoe;
 module.exports.index = index;
