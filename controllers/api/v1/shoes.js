@@ -101,6 +101,7 @@ const orderStatus = async (req, res) => {
 };
 
 // de status moet geupdate worden wanneer de schoen betaald is (order accepted) en hier is geen admin status voor nodig
+//wel moet er specifiek gekeken worden of de status van de schoen op order received staat en naar order accepted geupdate wordt
 const paymentStatus = async (req, res) => {
     //check if the shoe status === order received
     try {
@@ -144,7 +145,7 @@ const showStatus = async (req, res) => {
             message: "GET shoe status",
             data: [
                 {
-                    shoe
+                    status: shoe.status
                 }
             ]
         });
