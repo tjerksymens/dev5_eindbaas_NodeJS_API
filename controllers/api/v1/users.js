@@ -4,13 +4,13 @@ const User = require("../../../models/User");
 // POST /api/v1/users/signup
 const signup = async (req, res ,next) => {
     console.log(req.body);
-    let { username, password, first_name, last_name, adres, city, country  } = req.body;
+    let { username, password, first_name, last_name, adress, city, country  } = req.body;
 
     const user = new User({
         username: username,
         first_name: first_name,
         last_name: last_name,
-        adres: adres,
+        adress: adress,
         city: city,
         country: country
     });
