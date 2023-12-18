@@ -159,18 +159,24 @@ const paymentStatus = async (req, res) => {
 // Get a shoe by id haalt de schoen op met de bijbehorende configuratie op om bijvoorbeeld delen van schoen op social media
 const showShoe = async (req, res) => {
     const { id } = req.params;
-    const shoe = await Shoe.findById(id).populate('user');
     try {
+        const shoe = await Shoe.findById(id).populate('user');
+
+        if (!shoe) {
+            return res.status(404).json({
+                status: "error",
+                message: "Shoe not found",
+            });
+        }
+
         res.json({
             status: "success",
             message: "GET a shoe",
-            data: [
-                {
-                    shoe
-                }
-            ]
+            data: {
+                shoe
+            }
         });
-    }catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({
             status: "error",
@@ -178,7 +184,8 @@ const showShoe = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
+
 
 // Get all shoes (haal alle bestellingen op van de schoenen die gemaakt zijn) eventuele filter opties
 const index = async (req, res) => {
