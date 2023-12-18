@@ -65,40 +65,26 @@ const login = async (req, res, next) => {
     });
 }; 
 
-// POST /api/v1/users/change-password
+//Patch /api/v1/users/change-password
 const changePassword = async (req, res, next) => {
-    const { username, oldPassword, newPassword } = req.body;
-
-    // Authenticate the user
-    const authenticationResult = await User.authenticate()(username, oldPassword).catch(error => {
+    try{
+        const token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, "MyVerySecretWord");
+        const uid = decodedToken.uid;
+        const user = await User.findById(uid);
+        await user.changePassword(req.body.oldPassword, req.body.newPassword);
+        res.json({
+            status: "success",
+            message: "Password changed"
+        });
+    } catch (error) {
         res.json({
             status: "error",
             message: error.message
         });
-    });
-
-    if (authenticationResult && authenticationResult.user) {
-        // Change the password using passport-local-mongoose method
-        authenticationResult.user.changePassword(oldPassword, newPassword, function(err) {
-            if (err) {
-                res.json({
-                    status: "error",
-                    message: err.message
-                });
-            } else {
-                res.json({
-                    status: "success",
-                    message: "Password changed"
-                });
-            }
-        });
-    } else {
-        res.json({
-            status: "error",
-            message: "Authentication failed"
-        });
     }
-};
+}
+
 
 const checkAdmin = async (req, res, next) => {
     try{
