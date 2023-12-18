@@ -56,9 +56,10 @@ const create = async (req, res) => {
 // Admin moet bestelling van schoen kunnen verwijderen
 const cancel = async (req, res) => {
     try {
-        //check if the admin boolean is true
-        const { admin } = req.body;
-        if (admin === true) {
+        const token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, "MyVerySecretWord");
+        console.log(decodedToken);
+        if (decodedToken.admin === true) {
             const { id } = req.params;
             const shoe = await Shoe.findByIdAndDelete(id);
             res.json({
@@ -89,9 +90,10 @@ const cancel = async (req, res) => {
 // Admin moet de status (order received, order accepted, in production, order send, order arrived) van de bestelling kunnen aanpassen
 const orderStatus = async (req, res) => {
     try {
-        //check if the admin boolean is true
-        const { admin } = req.body;
-        if (admin === true) {
+        const token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, "MyVerySecretWord");
+        console.log(decodedToken);
+        if (decodedToken.admin === true) {
             const { id } = req.params;
             const shoe = await Shoe.findByIdAndUpdate(id, req.body, { new: true });
             res.json({
