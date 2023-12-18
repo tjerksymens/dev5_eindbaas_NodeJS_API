@@ -124,7 +124,7 @@ const checkAdmin = async (req, res, next) => {
 //get user from token 
 const getUser = async (req, res, next) => {
     try{
-        const { token } = req.params;
+        const { token } = req.header('Authorization');
         const decodedToken = jwt.verify(token, "MyVerySecretWord");
         const uid = decodedToken.uid;
         const user = await User.findById(uid);
