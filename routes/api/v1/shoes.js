@@ -11,7 +11,6 @@ router.get("/", shoesController.index);
 router.delete("/:id", passport.authenticate('jwt', { session: false }), shoesController.cancel);
 router.patch("/:id", passport.authenticate('jwt', { session: false }), shoesController.orderStatus);
 router.patch("/payment/:id", shoesController.paymentStatus);
-router.get("/status/:id", shoesController.showStatus);
 router.get("/:id", shoesController.showShoe);
 router.post("/:token", passport.authenticate('jwt', { session: false }), shoesController.create);
 

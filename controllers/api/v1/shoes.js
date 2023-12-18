@@ -154,30 +154,6 @@ const paymentStatus = async (req, res) => {
     }
 };
 
-// de status van de schoen moet opgehaald kunnen worden
-const showStatus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const shoe = await Shoe.findById(id);
-        res.json({
-            status: "success",
-            message: "GET shoe status",
-            data: [
-                {
-                    status: shoe.status
-                }
-            ]
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: 'error',
-            message: 'Internal server error',
-            error: error.message,
-        });
-    }
-};
-
 // Get a shoe by id haalt de schoen op met de bijbehorende configuratie op om bijvoorbeeld delen van schoen op social media
 const showShoe = async (req, res) => {
     const { id } = req.params;
@@ -226,6 +202,5 @@ module.exports.create = create;
 module.exports.cancel = cancel;
 module.exports.orderStatus = orderStatus;
 module.exports.paymentStatus = paymentStatus;
-module.exports.showStatus = showStatus;
 module.exports.showShoe = showShoe;
 module.exports.index = index;
