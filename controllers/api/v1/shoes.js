@@ -159,7 +159,7 @@ const paymentStatus = async (req, res) => {
 // Get a shoe by id haalt de schoen op met de bijbehorende configuratie op om bijvoorbeeld delen van schoen op social media
 const showShoe = async (req, res) => {
     const { id } = req.params;
-    const shoe = await Shoe.findById(id);
+    const shoe = await Shoe.findById(id).populate('user');
     try {
         res.json({
             status: "success",
