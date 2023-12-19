@@ -10,28 +10,21 @@ module.exports.go = (server) => {
         spark.on('data', (data) => {
             console.log("data received from client:👱🏻‍♂️", data);
 
-            if(data.action === 'order') {
+            if(data.action === 'orderSocket') {
                 primus.write({
                     action: 'order',
                     data: data.data
                 });
             }
 
-            if(data.action === 'orderCountUpdate') {
-                primus.write({
-                    action: 'orderCountUpdate',
-                    data: data.data
-                });
-            }
-
-            if(data.action === 'cancel') {
+            if(data.action === 'cancelSocket') {
                 primus.write({
                     action: 'cancel',
                     data: data.data
                 });
             }
 
-            if(data.action === 'orderStatus') {
+            if(data.action === 'orderStatusSocket') {
                 primus.write({
                     action: 'orderStatus',
                     data: data.data
