@@ -38,6 +38,7 @@ const create = async (req, res) => {
         data: [
           {
             shoe,
+            _id: shoe._id,
           },
         ],
       });
@@ -49,7 +50,7 @@ const create = async (req, res) => {
         error: error.message,
       });
     }
-  };
+};
   
 
 
