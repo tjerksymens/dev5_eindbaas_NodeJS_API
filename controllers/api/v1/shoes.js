@@ -6,7 +6,7 @@ const User = require('../../../models/User');
 
 const create = async (req, res) => {
     try {
-      const { name, configuration, price, size } = req.body;
+      const { name, configuration, price, size, snapshot } = req.body;
       const { token } = req.params;
       const decodedToken = jwt.verify(token, "MyVerySecretWord");
       const uid = decodedToken.uid;
