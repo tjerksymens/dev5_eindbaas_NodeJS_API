@@ -12,21 +12,21 @@ module.exports.go = (server) => {
 
             if(data.action === 'orderSocket') {
                 primus.write({
-                    action: 'order',
+                    action: 'orderSocket',
                     data: data.data
                 });
             }
 
             if(data.action === 'cancelSocket') {
                 primus.write({
-                    action: 'cancel',
+                    action: 'cancelSocket',
                     data: data.data
                 });
             }
 
             if(data.action === 'orderStatusSocket') {
                 primus.write({
-                    action: 'orderStatus',
+                    action: 'orderStatusSocket',
                     data: data.data
                 });
             }
