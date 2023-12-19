@@ -28,6 +28,7 @@ const ShoeSchema = new Schema({
     },
     snapshot: {
         type: String,
+        required: true
     },
 });
 // export the model
