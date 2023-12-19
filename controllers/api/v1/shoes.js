@@ -27,7 +27,8 @@ const create = async (req, res) => {
         configuration: configuration,
         price: price,
         size: size,
-        user: user._id, // Assign the user reference
+        user: user._id,
+        snapshot: snapshot,
       });
   
       await shoe.save();

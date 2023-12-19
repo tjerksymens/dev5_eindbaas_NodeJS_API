@@ -26,6 +26,9 @@ const ShoeSchema = new Schema({
         ref: 'User',
         required: true
     },
+    snapshot: {
+        type: String,
+    },
 });
 // export the model
 const Shoe = mongoose.model('Shoe', ShoeSchema);
